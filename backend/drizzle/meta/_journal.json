@@ -1,0 +1,76 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1790741020792,
+      "tag": "0000_init",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1790741021555,
+      "tag": "0001_imutabilidade",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1790741022300,
+      "tag": "0002_confidencialidade",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1790741023000,
+      "tag": "0003_colaboradores_viram_usuarios",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1790741024000,
+      "tag": "0004_remove_prioridade_confiabilidade",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1790741025000,
+      "tag": "0005_scrum_equipe_tags_nas_etapas",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1790741026000,
+      "tag": "0006_notificacoes_alertas",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1790741027000,
+      "tag": "0007_documentos_ocorrencias",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1790741028000,
+      "tag": "0008_importacoes",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1790741029000,
+      "tag": "0009_views_bi",
+      "breakpoints": true
+    }
+  ]
+}

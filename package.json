@@ -1,0 +1,16 @@
+{
+  "name": "controle-bsc-apd-upd",
+  "version": "0.6.0",
+  "private": true,
+  "scripts": {
+    "instalar": "npm --prefix backend install && npm --prefix frontend install",
+    "banco": "docker compose up -d db",
+    "preparar": "npm --prefix backend run db:setup",
+    "demo": "npm --prefix backend run db:demo",
+    "api": "npm --prefix backend run dev",
+    "web": "npm --prefix frontend run dev",
+    "test": "npm --prefix backend test",
+    "build": "npm --prefix frontend run build && npm --prefix backend run build",
+    "banco:local": "npm --prefix backend run banco:local"
+  }
+}
