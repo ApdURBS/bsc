@@ -38,7 +38,8 @@ Crie o repositório no GitHub e faça o push (`git remote add origin ...`, `git 
 ## 3. Render (backend)
 
 1. Crie um **Web Service** apontando para o repositório GitHub, diretório raiz `backend/`.
-2. Build command: `npm install && npm run build`
+2. Build command: `npm install --include=dev && npm run build`
+   (o `--include=dev` é necessário porque, com `NODE_ENV=production` definido, o Render pula `devDependencies` por padrão — e o build precisa do `typescript` e dos `@types/*`, que estão em `devDependencies`)
 3. Start command: `npm start`
 4. Health check path: `/api/health`
 5. Variáveis de ambiente (Render → Environment):
