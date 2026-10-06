@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { FileSpreadsheet, FileText, FileDown, BarChart3 } from 'lucide-react';
-import { get, qs } from '../lib/api';
+import { API_URL, get, qs } from '../lib/api';
 import { useFrentes, useStatus, usePessoas } from '../lib/queries';
 import { Button, Card, Empty, ErrorBox, Field, Input, Loading, Opts, PageHeader, Select, Table, Td, Th, cx } from '../components/ui';
 
@@ -15,7 +15,7 @@ export default function ReportsPage() {
   const def = cat.data?.find((r: any) => r.id === sel);
   const q = qs(f);
   const prev = useQuery({ queryKey: ['report', sel, q], queryFn: () => get(`/reports/${sel}${q}`), enabled: !!sel, placeholderData: (p) => p });
-  const link = (fmt: string) => `/api/reports/${sel}${qs({ ...f, formato: fmt })}`;
+  const link = (fmt: string) => `${API_URL}/reports/${sel}${qs({ ...f, formato: fmt })}`;
   const set = (k: string, v: string) => setF((s) => ({ ...s, [k]: v }));
   return (
     <>

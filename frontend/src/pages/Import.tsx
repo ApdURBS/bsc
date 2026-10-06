@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { AlertTriangle, CheckCircle2, CopyX, Download, FileSpreadsheet, XCircle } from 'lucide-react';
-import { get, post, qs, upload } from '../lib/api';
+import { API_URL, get, post, qs, upload } from '../lib/api';
 import { fmtDataHora } from '../lib/format';
 import { Badge, Button, Card, Empty, ErrorBox, Field, Loading, Modal, PageHeader, Pagination, Select, Table, Td, Th, useToast, cx } from '../components/ui';
 
@@ -87,7 +87,7 @@ function Previa({ inicial, onFim }: { inicial: any; onFim: () => void }) {
         <div className="flex flex-wrap items-center gap-2 border-b border-slate-200 px-4 py-3">
           <div className="mr-auto text-sm font-semibold text-slate-800">Problemas encontrados <span className="font-normal text-slate-400">({problemas.length})</span></div>
           <Select className="!w-56" value={tipo} onChange={(e) => setTipo(e.target.value)}><option value="">Todos os tipos ({det?.problemas?.length ?? 0})</option>{Object.entries(TIPOS).filter(([k]) => s.porTipo[k] > 0).map(([k, v]) => <option key={k} value={k}>{v} ({s.porTipo[k]})</option>)}</Select>
-          <a href={`/api/import/${id}/problemas.csv`}><Button size="sm"><Download className="h-3.5 w-3.5" />CSV</Button></a>
+          <a href={`${API_URL}/import/${id}/problemas.csv`}><Button size="sm"><Download className="h-3.5 w-3.5" />CSV</Button></a>
         </div>
         {!det ? <Loading /> : !problemas.length ? <Empty>Nenhum problema neste filtro.</Empty> : (
           <div className="max-h-96 overflow-y-auto"><Table>

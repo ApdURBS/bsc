@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Copy, Download, Eye, FileText, FolderOpen, History, Pencil, Plus, Search, Trash2, Upload } from 'lucide-react';
-import { del, get, patch, qs, upload } from '../lib/api';
+import { API_URL, del, get, patch, qs, upload } from '../lib/api';
 import { useAuth } from '../lib/auth';
 import { fmtData, fmtDataHora, fmtTamanho } from '../lib/format';
 import { usePessoas, useTiposDoc } from '../lib/queries';
 import { Badge, Button, Card, Empty, ErrorBox, Field, Input, Loading, Modal, Opts, Pagination, Select, Table, Td, Textarea, Th, useToast } from './ui';
 
 export const CATEGORIAS = ['Relatórios', 'Documentos', 'Evidências', 'Outros'];
-const url = (id: number, extra = '') => `/api/documents/${id}/download${extra}`;
+const url = (id: number, extra = '') => `${API_URL}/documents/${id}/download${extra}`;
 
 function useInvalidate() {
   const qc = useQueryClient();

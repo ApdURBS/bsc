@@ -3,7 +3,7 @@ export class ApiError extends Error {
 }
 
 // Em dev, vazio (usa o proxy do Vite para /api, mesma origem). Em produção, URL do backend no Render.
-const API_URL = import.meta.env.VITE_API_URL ?? '/api';
+export const API_URL = import.meta.env.VITE_API_URL ?? '/api';
 
 // Com frontend e API em domínios diferentes, o JS do frontend não consegue ler via document.cookie
 // um cookie que pertence ao domínio da API (isolamento por origem) — por isso o token CSRF vem no
