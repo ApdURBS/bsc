@@ -5,7 +5,12 @@ export class ApiError extends Error {
 // Em dev, vazio (usa o proxy do Vite para /api, mesma origem). Em produção, URL do backend no Render.
 const API_URL = import.meta.env.VITE_API_URL ?? '/api';
 
-const csrf = () => document.cookie.split('; ').find((c) => c.startsWith('bsc_csrf='))?.split('=')[1] ?? '';
+// Com frontend e API em domínios diferentes, o JS do frontend não consegue ler via document.cookie
+// um cookie que pertence ao domínio da API (isolamento por origem) — por isso o token CSRF vem no
+// corpo das respostas de /auth/login e /auth/me, e é guardado aqui em memória.
+let csrfToken = '';
+export const setCsrfToken = (t: string | undefined) => { if (t) csrfToken = t; };
+const csrf = () => csrfToken;
 
 export async function api<T = any>(method: string, url: string, body?: unknown): Promise<T> {
   const res = await fetch(`${API_URL}${url}`, {

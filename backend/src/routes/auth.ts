@@ -42,9 +42,12 @@ authRouter.post('/login', limiter, wrap(async (req, res) => {
   await db.insert(sessions).values({ id: sid, userId: u.id, expiresAt, ip: req.ip, userAgent: req.get('user-agent')?.slice(0, 250) });
   await db.update(users).set({ lastLoginAt: new Date(), failedLogins: 0, lockedUntil: null }).where(eq(users.id, u.id));
   await audit(db, { userId: u.id, nome: u.nome, ip: req.ip ?? null }, { acao: 'LOGIN', modulo: 'Autenticação', registroId: u.id, rotulo: u.username });
+  const csrfToken = randomToken(16);
   res.cookie(COOKIE_TOKEN, signToken(u.id, sid, horas * 3600), { ...cookieOpts, maxAge: horas * 3600_000 });
-  res.cookie(COOKIE_CSRF, randomToken(16), { ...cookieOpts, httpOnly: false, maxAge: horas * 3600_000 });
-  res.json({ ok: true, mustChangePassword: u.mustChangePassword });
+  res.cookie(COOKIE_CSRF, csrfToken, { ...cookieOpts, httpOnly: false, maxAge: horas * 3600_000 });
+  // O token também vai no corpo: com frontend e API em domínios diferentes, o JS do frontend não
+  // consegue ler via document.cookie um cookie pertencente ao domínio da API (isolamento por origem).
+  res.json({ ok: true, mustChangePassword: u.mustChangePassword, csrfToken });
 }));
 
 authRouter.post('/logout', authenticate, wrap(async (req, res) => {
@@ -56,7 +59,8 @@ authRouter.post('/logout', authenticate, wrap(async (req, res) => {
 
 authRouter.get('/me', authenticate, wrap(async (req, res) => {
   const u = req.user!;
-  res.json({ id: u.id, nome: u.nome, username: u.username, email: u.email, perfil: u.roleNome, mustChangePassword: u.mustChangePassword, permissoes: [...u.permissions], pertenceApd: u.pertenceApd, convidado: u.convidado, acessoIds: u.acessoIds });
+  // Reenvia o csrfToken atual (cookie) no corpo, para o frontend guardar em memória — ver comentário no /login.
+  res.json({ id: u.id, nome: u.nome, username: u.username, email: u.email, perfil: u.roleNome, mustChangePassword: u.mustChangePassword, permissoes: [...u.permissions], pertenceApd: u.pertenceApd, convidado: u.convidado, acessoIds: u.acessoIds, csrfToken: req.cookies?.[COOKIE_CSRF] });
 }));
 
 authRouter.post('/change-password', authenticate, wrap(async (req, res) => {
