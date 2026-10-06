@@ -54,7 +54,8 @@ Crie o repositório no GitHub e faça o push (`git remote add origin ...`, `git 
    | `CORS_ORIGIN` | mesma URL do `APP_URL` (ou lista separada por vírgula, se houver mais de um domínio/preview) |
    | `TZ` | `America/Sao_Paulo` |
    | `ADMIN_USERNAME`, `ADMIN_EMAIL`, `ADMIN_INITIAL_PASSWORD` | usados só no primeiro `db:seed`; pode deixar os padrões |
-   | `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `SMTP_FROM` | credenciais do provedor de e-mail (obrigatório para recuperação de senha funcionar em produção) |
+   | `BREVO_API_KEY`, `SMTP_FROM` | recomendado no Render (ver seção 6) — API HTTP, não é bloqueada |
+   | `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS` | alternativa via SMTP puro (ver seção 6 sobre bloqueio de porta no Render) |
    | `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `SUPABASE_STORAGE_BUCKET` | ver seção 5 (uploads) |
    | `MAX_UPLOAD_MB` | `25` (ou o limite desejado) |
 
@@ -79,7 +80,9 @@ O Render tem filesystem efêmero — arquivos gravados em disco são perdidos a 
 
 ## 6. E-mail (recuperação de senha)
 
-Configure `SMTP_HOST/PORT/USER/PASS/FROM` com um provedor real (SendGrid, Amazon SES, etc.). Sem isso, o backend **não envia e-mail** e apenas registra um aviso no log (sem o link, por segurança) — a recuperação de senha fica indisponível até configurar.
+**No Render, prefira `BREVO_API_KEY`** (API HTTP da Brevo, porta 443) em vez de `SMTP_HOST/PORT/USER/PASS`: vários PaaS (Render incluído) bloqueiam ou derrubam silenciosamente conexões SMTP de saída (portas 25/465/587), mesmo para destinos legítimos como o Gmail — o sintoma é a requisição de "esqueci minha senha" travar por ~2 minutos e retornar 500. A API HTTP não tem esse problema. Crie uma conta grátis em [brevo.com](https://www.brevo.com), gere uma **API Key** (SMTP & API → API Keys) e configure só `BREVO_API_KEY` + `SMTP_FROM` (o remetente). SMTP puro continua funcionando normalmente em dev local ou em hosts que não bloqueiam a porta.
+
+Sem nenhum dos dois configurados, o backend **não envia e-mail** e apenas registra um aviso no log (sem o link, por segurança) — a recuperação de senha fica indisponível até configurar.
 
 ## 7. Tarefas agendadas (alertas)
 

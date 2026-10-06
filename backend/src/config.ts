@@ -18,6 +18,9 @@ export const config = {
     password: env.ADMIN_INITIAL_PASSWORD ?? 'Trocar@123',
   },
   smtp: { host: env.SMTP_HOST, port: Number(env.SMTP_PORT ?? 587), user: env.SMTP_USER, pass: env.SMTP_PASS, from: env.SMTP_FROM ?? 'Controle BSC <noreply@urbs.local>' },
+  // API HTTP da Brevo (porta 443, nunca bloqueada por egress de PaaS) — alternativa ao SMTP puro,
+  // que vários hosts (ex. Render) bloqueiam/restringem na saída. Se definida, tem prioridade sobre o SMTP acima.
+  brevoApiKey: env.BREVO_API_KEY ?? '',
   // Origens aceitas no CORS (frontend separado, ex. Vercel). Lista separada por vírgula; padrão = APP_URL.
   corsOrigins: (env.CORS_ORIGIN ?? env.APP_URL ?? 'http://localhost:5173').split(',').map((s) => s.trim()).filter(Boolean),
   // Supabase Storage para documentos (opcional): sem isso, uploads usam disco local (UPLOAD_DIR) — adequado para dev/testes, não para Render em produção.
